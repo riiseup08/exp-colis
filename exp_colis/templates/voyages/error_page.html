@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="UTF-8"><title>Erreur</title>
+<style>
+    body { font-family: Arial, sans-serif; background: #f4f6f9; }
+    .container { max-width: 400px; margin: 100px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); text-align: center; }
+    h2 { color: #ea4335; } p { color: #666; margin: 15px 0; }
+    .back { color: #1a73e8; text-decoration: none; }
+</style></head>
+<body><div class="container">
+    <h2>⚠️ Erreur</h2>
+    <p>{{ error_message }}</p>
+    <a href="{% url 'exp_colis:dashboard' %}" class="back">← Retour au Dashboard</a>
+</div></body></html>

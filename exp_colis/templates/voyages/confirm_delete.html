@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="UTF-8"><title>Confirmer Suppression</title>
+<style>
+    body { font-family: Arial, sans-serif; background: #f4f6f9; }
+    .container { max-width: 400px; margin: 100px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); text-align: center; }
+    h2 { color: #ea4335; margin-bottom: 15px; }
+    p { margin-bottom: 20px; color: #666; }
+    .btn-danger { padding: 10px 25px; background: #ea4335; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem; }
+    .back { display: inline-block; margin-left: 10px; color: #1a73e8; text-decoration: none; }
+</style></head>
+<body><div class="container">
+    <h2>🗑️ Confirmer la suppression</h2>
+    <p>Voulez-vous vraiment supprimer <strong>{{ object }}</strong> ?</p>
+    <form method="post">{% csrf_token %}
+        <button type="submit" class="btn-danger">Oui, supprimer</button>
+        <a href="{% url 'exp_colis:dashboard' %}" class="back">Annuler</a>
+    </form>
+</div></body></html>

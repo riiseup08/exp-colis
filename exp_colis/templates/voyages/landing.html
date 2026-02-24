@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exp Colis — Envoyez vos colis via des voyageurs</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Arial', sans-serif; color: #333; }
+
+        /* NAV */
+        nav {
+            background: white;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo { font-size: 1.5rem; font-weight: bold; color: #1a73e8; text-decoration: none; }
+        .nav-links a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #555;
+            font-size: 0.95rem;
+        }
+        .btn-nav {
+            background: #1a73e8;
+            color: white !important;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+            color: white;
+            padding: 90px 40px;
+            text-align: center;
+        }
+        .hero h1 { font-size: 2.8rem; margin-bottom: 20px; line-height: 1.3; }
+        .hero p { font-size: 1.2rem; max-width: 600px; margin: 0 auto 35px; opacity: 0.9; }
+        .hero-buttons { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+        .btn-primary {
+            background: white;
+            color: #1a73e8;
+            padding: 14px 35px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: transform 0.2s;
+        }
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            padding: 14px 35px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+            border: 2px solid white;
+        }
+        .btn-primary:hover { transform: scale(1.05); }
+
+        /* HOW IT WORKS */
+        .section { padding: 70px 40px; text-align: center; }
+        .section h2 { font-size: 2rem; margin-bottom: 10px; color: #1a73e8; }
+        .section .subtitle { color: #888; margin-bottom: 50px; font-size: 1rem; }
+        .steps { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
+        .step {
+            background: white;
+            border-radius: 12px;
+            padding: 30px 25px;
+            width: 220px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: transform 0.2s;
+        }
+        .step:hover { transform: translateY(-5px); }
+        .step .icon { font-size: 2.5rem; margin-bottom: 15px; }
+        .step h3 { font-size: 1rem; margin-bottom: 10px; color: #333; }
+        .step p { font-size: 0.85rem; color: #888; line-height: 1.5; }
+
+        /* WHY US */
+        .why { background: #f4f6f9; padding: 70px 40px; text-align: center; }
+        .why h2 { font-size: 2rem; color: #1a73e8; margin-bottom: 10px; }
+        .why .subtitle { color: #888; margin-bottom: 50px; }
+        .features { display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; }
+        .feature {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            width: 200px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+        .feature .icon { font-size: 2rem; margin-bottom: 12px; }
+        .feature h3 { font-size: 0.95rem; color: #333; margin-bottom: 6px; }
+        .feature p { font-size: 0.82rem; color: #888; }
+
+        /* STATS */
+        .stats-bar {
+            background: #1a73e8;
+            color: white;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            flex-wrap: wrap;
+            text-align: center;
+        }
+        .stat-item .number { font-size: 2.2rem; font-weight: bold; }
+        .stat-item .label { font-size: 0.9rem; opacity: 0.85; margin-top: 5px; }
+
+        /* CTA */
+        .cta {
+            padding: 80px 40px;
+            text-align: center;
+            background: white;
+        }
+        .cta h2 { font-size: 2rem; margin-bottom: 15px; color: #333; }
+        .cta p { color: #888; margin-bottom: 30px; font-size: 1rem; }
+        .btn-cta {
+            background: #1a73e8;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #1a1a2e;
+            color: #aaa;
+            text-align: center;
+            padding: 25px;
+            font-size: 0.85rem;
+        }
+        footer span { color: #1a73e8; }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <a href="/" class="logo">🚚 Exp Colis</a>
+    <div class="nav-links">
+        <a href="#comment">Comment ça marche</a>
+        <a href="#pourquoi">Pourquoi nous</a>
+        <a href="/accounts/login/">Connexion</a>
+        <a href="/accounts/register/" class="btn-nav">S'inscrire</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <h1>Envoyez vos colis<br>via des voyageurs de confiance</h1>
+    <p>Connectez-vous avec des voyageurs qui ont de l'espace disponible dans leurs bagages. Rapide, économique et fiable.</p>
+    <div class="hero-buttons">
+        <a href="/accounts/register/" class="btn-primary">🚀 Commencer gratuitement</a>
+        <a href="/accounts/login/" class="btn-secondary">Se connecter</a>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="comment">
+    <h2>Comment ça marche ?</h2>
+    <p class="subtitle">En 4 étapes simples, votre colis arrive à destination</p>
+    <div class="steps">
+        <div class="step">
+            <div class="icon">📝</div>
+            <h3>1. Créez un compte</h3>
+            <p>Inscription gratuite en moins d'une minute.</p>
+        </div>
+        <div class="step">
+            <div class="icon">✈️</div>
+            <h3>2. Publiez votre voyage</h3>
+            <p>Vous voyagez? Indiquez votre trajet et le poids disponible.</p>
+        </div>
+        <div class="step">
+            <div class="icon">📦</div>
+            <h3>3. Faites une demande</h3>
+            <p>Besoin d'envoyer un colis? Publiez votre demande.</p>
+        </div>
+        <div class="step">
+            <div class="icon">🔗</div>
+            <h3>4. Correspondance auto</h3>
+            <p>Notre système connecte automatiquement voyageurs et expéditeurs.</p>
+        </div>
+    </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+    <div class="stat-item">
+        <div class="number">100%</div>
+        <div class="label">Gratuit à l'inscription</div>
+    </div>
+    <div class="stat-item">
+        <div class="number">⚡</div>
+        <div class="label">Matching instantané</div>
+    </div>
+    <div class="stat-item">
+        <div class="number">🌍</div>
+        <div class="label">Toutes destinations</div>
+    </div>
+    <div class="stat-item">
+        <div class="number">🔒</div>
+        <div class="label">Plateforme sécurisée</div>
+    </div>
+</div>
+
+<!-- WHY US -->
+<section class="why" id="pourquoi">
+    <h2>Pourquoi choisir Exp Colis ?</h2>
+    <p class="subtitle">Une solution moderne pour l'envoi de colis entre particuliers</p>
+    <div class="features">
+        <div class="feature">
+            <div class="icon">💰</div>
+            <h3>Économique</h3>
+            <p>Jusqu'à 70% moins cher que les services traditionnels.</p>
+        </div>
+        <div class="feature">
+            <div class="icon">⚡</div>
+            <h3>Rapide</h3>
+            <p>Matching automatique dès qu'un voyage correspond.</p>
+        </div>
+        <div class="feature">
+            <div class="icon">🤝</div>
+            <h3>Fiable</h3>
+            <p>Profils vérifiés et système de confirmation.</p>
+        </div>
+        <div class="feature">
+            <div class="icon">🌍</div>
+            <h3>Partout</h3>
+            <p>Toutes les destinations, tous les pays.</p>
+        </div>
+        <div class="feature">
+            <div class="icon">📱</div>
+            <h3>Simple</h3>
+            <p>Interface intuitive, accessible depuis n'importe quel appareil.</p>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+    <h2>Prêt à envoyer votre premier colis ?</h2>
+    <p>Rejoignez la communauté Exp Colis aujourd'hui. C'est gratuit!</p>
+    <a href="/accounts/register/" class="btn-cta">Créer mon compte gratuitement →</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>© 2026 <span>Exp Colis</span> — Connecter les voyageurs et les expéditeurs partout dans le monde.</p>
+</footer>
+
+</body>
+</html>

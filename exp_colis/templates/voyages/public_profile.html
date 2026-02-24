@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Profil de {{ profile_user.username }}</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background: #f4f6f9; }
+        nav { background: #1a73e8; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
+        nav h1 { font-size: 1.4rem; } nav a { color: white; text-decoration: none; margin-left: 15px; }
+        .container { max-width: 750px; margin: 30px auto; padding: 0 20px; }
+        .card { background: white; border-radius: 8px; padding: 30px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .avatar { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #1a73e8; }
+        .avatar-placeholder { width: 90px; height: 90px; border-radius: 50%; background: #1a73e8; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; }
+        .profile-header { display: flex; align-items: center; gap: 20px; margin-bottom: 15px; }
+        .profile-header h2 { font-size: 1.3rem; }
+        .stats { display: flex; gap: 15px; margin-top: 10px; }
+        .stat { background: #f0f4ff; padding: 7px 14px; border-radius: 20px; font-size: 0.85rem; color: #1a73e8; font-weight: bold; }
+        h3 { margin-bottom: 15px; color: #1a73e8; border-bottom: 2px solid #1a73e8; padding-bottom: 8px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th { background: #f8f9fa; padding: 10px; text-align: left; border-bottom: 2px solid #dee2e6; }
+        td { padding: 10px; border-bottom: 1px solid #dee2e6; }
+        .bio { color: #666; font-style: italic; margin-top: 8px; }
+        .back { color: #1a73e8; text-decoration: none; display: inline-block; margin-bottom: 20px; }
+        .empty { color: #999; font-style: italic; padding: 15px 0; }
+    </style>
+</head>
+<body>
+<nav>
+    <h1>🚚 Exp Colis</h1>
+    <div>
+        <a href="{% url 'exp_colis:dashboard' %}">Dashboard</a>
+        <a href="/accounts/logout/">Déconnexion</a>
+    </div>
+</nav>
+<div class="container">
+    <a href="{% url 'exp_colis:dashboard' %}" class="back">← Retour au Dashboard</a>
+
+    <div class="card">
+        <div class="profile-header">
+            {% if profile.photo %}
+            <img src="{{ profile.photo.url }}" class="avatar" alt="photo">
+            {% else %}
+            <div class="avatar-placeholder">{{ profile_user.username|first|upper }}</div>
+            {% endif %}
+            <div>
+                <h2>{{ profile_user.username }}</h2>
+                {% if profile.ville and profile.pays %}
+                <p>📍 {{ profile.ville }}, {{ profile.pays }}</p>
+                {% endif %}
+                {% if profile.phone %}
+                <p>📞 {{ profile.phone }}</p>
+                {% endif %}
+                <div class="stats">
+                    <span class="stat">✈️ {{ profile.nb_voyages }} voyages</span>
+                    <span class="stat">📦 {{ profile.nb_demandes }} demandes</span>
+                </div>
+                {% if profile.bio %}
+                <p class="bio">"{{ profile.bio }}"</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>✈️ Voyages de {{ profile_user.username }}</h3>
+        {% if voyages %}
+        <table>
+            <thead><tr><th>Départ</th><th>Arrivée</th><th>Date</th><th>Poids dispo</th><th>Prix/kg</th></tr></thead>
+            <tbody>
+                {% for v in voyages %}
+                <tr>
+                    <td>{{ v.ville_depart }}</td>
+                    <td>{{ v.ville_arrivee }}</td>
+                    <td>{{ v.date_depart }}</td>
+                    <td>{{ v.poids_disponible }} kg</td>
+                    <td>{{ v.prix_par_kg }} $</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty">Aucun voyage enregistré.</p>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exp Colis - Dashboard</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background: #f4f6f9; color: #333; }
+        nav { background: #1a73e8; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
+        nav h1 { font-size: 1.4rem; }
+        nav a { color: white; text-decoration: none; margin-left: 15px; font-size: 0.9rem; }
+        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
+        .actions { display: flex; gap: 10px; margin-bottom: 25px; }
+        .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; text-decoration: none; font-size: 0.9rem; display: inline-block; }
+        .btn-primary { background: #1a73e8; color: white; }
+        .btn-success { background: #34a853; color: white; }
+        .btn-danger { background: #ea4335; color: white; font-size: 0.8rem; padding: 5px 10px; }
+        .btn-warning { background: #fbbc04; color: #333; font-size: 0.8rem; padding: 5px 10px; }
+        .btn-info { background: #17a2b8; color: white; font-size: 0.8rem; padding: 5px 10px; }
+        .section { background: white; border-radius: 8px; padding: 20px; margin-bottom: 25px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+        .section h2 { margin-bottom: 15px; font-size: 1.1rem; border-bottom: 2px solid #1a73e8; padding-bottom: 8px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th { background: #f8f9fa; padding: 10px; text-align: left; border-bottom: 2px solid #dee2e6; }
+        td { padding: 10px; border-bottom: 1px solid #dee2e6; vertical-align: top; }
+        tr:hover { background: #f8f9fa; }
+        .badge { padding: 3px 8px; border-radius: 12px; font-size: 0.75rem; }
+        .badge-success { background: #d4edda; color: #155724; }
+        .badge-warning { background: #fff3cd; color: #856404; }
+        .empty { color: #999; font-style: italic; text-align: center; padding: 20px; }
+        .messages { margin-bottom: 20px; }
+        .alert { padding: 10px 15px; border-radius: 5px; margin-bottom: 10px; }
+        .alert-success { background: #d4edda; color: #155724; }
+        .alert-error { background: #f8d7da; color: #721c24; }
+        .contact-box {
+            background: #f0f7ff;
+            border: 1px solid #c2d9f8;
+            border-radius: 6px;
+            padding: 8px 10px;
+            font-size: 0.82rem;
+            line-height: 1.8;
+            min-width: 160px;
+        }
+        .profile-link { color: #1a73e8; text-decoration: none; font-size: 0.8rem; font-weight: bold; }
+        .locked { color: #999; font-size: 0.82rem; }
+    </style>
+</head>
+<body>
+<nav>
+    <h1>🚚 Exp Colis</h1>
+    <div>
+        <span>Bonjour, <a href="{% url 'exp_colis:profile' %}" style="color:white;">{{ request.user.username }}</a></span>
+        <a href="/accounts/logout/">Déconnexion</a>
+        <a href="/admin/">Admin</a>
+    </div>
+</nav>
+
+<div class="container">
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="actions">
+        <a href="{% url 'exp_colis:add_voyage' %}" class="btn btn-primary">✈️ Ajouter un Voyage</a>
+        <a href="{% url 'exp_colis:add_demande' %}" class="btn btn-success">📦 Ajouter une Demande</a>
+    </div>
+
+    <!-- Voyages -->
+    <div class="section">
+        <h2>✈️ Mes Voyages ({{ voyages.count }})</h2>
+        {% if voyages %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Départ</th><th>Arrivée</th><th>Date départ</th><th>Date arrivée</th><th>Poids dispo (kg)</th><th>Prix/kg</th><th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for voyage in voyages %}
+                <tr>
+                    <td>{{ voyage.ville_depart }}</td>
+                    <td>{{ voyage.ville_arrivee }}</td>
+                    <td>{{ voyage.date_depart }}</td>
+                    <td>{{ voyage.date_arrivee }}</td>
+                    <td>{{ voyage.poids_disponible }} kg</td>
+                    <td>{{ voyage.prix_par_kg }} $</td>
+                    <td>
+                        <a href="{% url 'exp_colis:edit_voyage' voyage.id %}" class="btn btn-warning">✏️ Modifier</a>
+                        <a href="{% url 'exp_colis:delete_voyage' voyage.id %}" class="btn btn-danger">🗑️ Supprimer</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty">Aucun voyage enregistré.</p>
+        {% endif %}
+    </div>
+
+    <!-- Demandes -->
+    <div class="section">
+        <h2>📦 Mes Demandes ({{ demandes.count }})</h2>
+        {% if demandes %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Départ</th><th>Arrivée</th><th>Date livraison</th><th>Poids (kg)</th><th>Description</th><th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for demande in demandes %}
+                <tr>
+                    <td>{{ demande.ville_depart }}</td>
+                    <td>{{ demande.ville_arrivee }}</td>
+                    <td>{{ demande.date_livraison }}</td>
+                    <td>{{ demande.poids }} kg</td>
+                    <td>{{ demande.description|default:"-" }}</td>
+                    <td>
+                        <a href="{% url 'exp_colis:edit_demande' demande.id %}" class="btn btn-warning">✏️ Modifier</a>
+                        <a href="{% url 'exp_colis:delete_demande' demande.id %}" class="btn btn-danger">🗑️ Supprimer</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty">Aucune demande enregistrée.</p>
+        {% endif %}
+    </div>
+
+    <!-- Correspondances -->
+    <div class="section">
+        <h2>🔗 Correspondances ({{ correspondances.count }})</h2>
+        {% if correspondances %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Demande</th>
+                    <th>Voyage</th>
+                    <th>Validé</th>
+                    <th>Colis pris</th>
+                    <th>Paiement</th>
+                    <th>Contact</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in correspondances %}
+                <tr>
+                    <td>{{ c.demande.ville_depart }} → {{ c.demande.ville_arrivee }}</td>
+                    <td>{{ c.voyage.ville_depart }} → {{ c.voyage.ville_arrivee }}</td>
+                    <td>
+                        {% if c.is_validated %}
+                        <span class="badge badge-success">✅ Oui</span>
+                        {% else %}
+                        <span class="badge badge-warning">⏳ Non</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if c.colis_pris_en_charge %}
+                        <span class="badge badge-success">✅ Oui</span>
+                        {% else %}
+                        <span class="badge badge-warning">⏳ Non</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if c.paiement_effectue %}
+                        <span class="badge badge-success">✅ Payé</span>
+                        {% else %}
+                        <span class="badge badge-warning">⏳ En attente</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if c.is_validated %}
+                            {% if request.user == c.demande.user %}
+                            <div class="contact-box">
+                                <strong>✈️ {{ c.voyage.voyageur.username }}</strong><br>
+                                {% if c.voyage.voyageur.profile.phone %}
+                                📞 {{ c.voyage.voyageur.profile.phone }}<br>
+                                {% endif %}
+                                📧 {{ c.voyage.voyageur.email }}<br>
+                                <a href="{% url 'exp_colis:public_profile' c.voyage.voyageur.username %}" class="profile-link">Voir profil →</a>
+                            </div>
+                            {% elif request.user == c.voyage.voyageur %}
+                            <div class="contact-box">
+                                <strong>📦 {{ c.demande.user.username }}</strong><br>
+                                {% if c.demande.user.profile.phone %}
+                                📞 {{ c.demande.user.profile.phone }}<br>
+                                {% endif %}
+                                📧 {{ c.demande.user.email }}<br>
+                                <a href="{% url 'exp_colis:public_profile' c.demande.user.username %}" class="profile-link">Voir profil →</a>
+                            </div>
+                            {% endif %}
+                        {% else %}
+                        <span class="locked">🔒 Validez pour révéler</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if not c.is_validated %}
+                        <a href="{% url 'exp_colis:validate_correspondance' c.id %}" class="btn btn-info">✅ Valider</a>
+                        {% endif %}
+                        {% if not c.colis_pris_en_charge and request.user == c.voyage.voyageur %}
+                        <a href="{% url 'exp_colis:prendre_colis' c.id %}" class="btn btn-primary">📦 Prendre</a>
+                        {% endif %}
+                        {% if not c.paiement_effectue and request.user == c.demande.user %}
+                        <a href="{% url 'exp_colis:effectuer_paiement' c.id %}" class="btn btn-success">💳 Payer</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty">Aucune correspondance trouvée.</p>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>
